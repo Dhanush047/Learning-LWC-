@@ -1,0 +1,20 @@
+<template>
+<lightning-card  variant="Narrow"  title="Hello" icon-name="standard:account">
+    Hello {message}
+</lightning-card>
+<lightning-card  variant="Narrow"  title="Hello" icon-name="standard:account">
+    <lightning-input type="text" variant="standard" name="name" label="label" placeholder="type here..." onchange={msgchange}></lightning-input>
+</lightning-card>
+</template>
+
+==================================================================================================================================================
+
+import { LightningElement } from 'lwc';
+export default class DataBinding extends LightningElement 
+{
+    message = "Welcome to Salesforce LWC";
+msgchange(event)
+{
+    this.message = event.target.value;
+}
+}
