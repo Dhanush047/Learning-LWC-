@@ -1,0 +1,24 @@
+================================================================
+
+Getter.html
+
+<template>
+    {text}
+    {toUpper}
+</template>
+
+================================================================
+
+Getter.js
+
+import { LightningElement } from 'lwc';
+export default class Getterdemo extends LightningElement 
+{
+    text = 'welcome to salesforce';
+get toUpper()
+{
+    return this.text.toUpperCase();
+}
+}
+
+================================================================
