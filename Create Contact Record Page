@@ -1,0 +1,45 @@
+HTML :-
+
+<template>
+<lightning-card  variant="Narrow"  title="Contact Record Create" icon-name="standard:account">
+   <div class = "slds-m-around_medium">
+       <lightning-record-form
+       object-api-name = "Contact"
+       layout-type="Full"
+       columns="2"
+       onsuccess = {concreate}>
+
+       </lightning-record-form>
+   </div>
+</lightning-card>
+</template>
+
+=================================================================================================================
+
+JS:-
+
+import { LightningElement } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { NavigationMixin } from 'lightning/navigation';
+
+export default class ContactRecordCreate extends NavigationMixin (LightningElement) {
+
+concreate (event)
+{
+    const eve = new ShowToastEvent({
+        title: 'Contact Created',
+        message: "Record Id is -"+event.detail.id,
+        variant: 'success',
+    });
+    this.dispatchEvent(eve);
+
+    this[NavigationMixin.Navigate]({
+           type: 'standard__recordPage',
+           attributes: {
+               recordId : event.detail.id,
+                objectApiName:'Contact',
+                actionName : 'view'
+           },
+       });
+}
+}
