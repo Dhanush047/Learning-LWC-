@@ -1,0 +1,54 @@
+CREATE RECORD WITH FIELDS
+
+===========================================================================================================
+HTML :-
+
+<template>
+
+    <lightning-card  variant="Narrow"  title="Create Record With Fields" icon-name="standard:account">
+   <div class = "slds-m-around_medium">
+       <lightning-record-form
+       object-api-name = "Account"
+       fields = {accountfields}
+       columns="2"
+       onsuccess = {acccreate}>
+
+       </lightning-record-form>
+   </div>
+</lightning-card>
+
+</template>
+
+===========================================================================================================
+JS :-
+
+import { LightningElement } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { NavigationMixin } from 'lightning/navigation';
+import Name_field from '@salesforce/schema/Account.Name';
+import Type_field from '@salesforce/schema/Account.Type';
+import Phone_field from '@salesforce/schema/Account.Phone';
+import Rating_field from '@salesforce/schema/Account.Rating';
+export default class CreateRecordwithFields extends NavigationMixin (LightningElement) 
+{
+    accountfields = [Name_field,Type_field,Phone_field,Rating_field];
+    acccreate (event)
+{
+    const eve = new ShowToastEvent({
+        title: 'Account  Created',
+        message: "Record Id is -"+event.detail.id,
+        variant: 'success',
+    });
+    this.dispatchEvent(eve);
+
+    this[NavigationMixin.Navigate]({
+           type: 'standard__recordPage',
+           attributes: {
+               recordId : event.detail.id,
+                objectApiName:'Account',
+                actionName : 'view'
+           },
+       });
+}
+}
+===========================================================================================================
