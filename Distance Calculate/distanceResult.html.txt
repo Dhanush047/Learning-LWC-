@@ -1,9 +1,5 @@
 <template>
-  <lightning-card title="Distance Result">
-    <div class="slds-p-around_medium">
-      <div>Distance: {distance}</div>
-      <div>Price per km: {pricePerKm}</div>
-      <div class="slds-m-top_medium">Result: {calculatedValue}</div>
-    </div>
-  </lightning-card>
+  <div>
+    <p>The calculated value is {result}</p>
+  </div>
 </template>
