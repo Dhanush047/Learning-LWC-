@@ -1,0 +1,35 @@
+import { LightningElement, wire } from 'lwc';
+import { subscribe, MessageContext } from 'lightning/messageService';
+import DISTANCE_CALCULATION_CHANNEL from '@salesforce/messageChannel/DistanceCalculationChannel__c';
+
+export default class DistanceResult extends LightningElement {
+  calculatedValue = 0;
+  distance = 0;
+  pricePerKm = 0;
+
+  @wire(MessageContext)
+  messageContext;
+
+  subscription;
+
+  connectedCallback() {
+    this.subscribeToMessageChannel();
+  }
+
+  subscribeToMessageChannel() {
+    this.subscription = subscribe(
+      this.messageContext,
+      DISTANCE_CALCULATION_CHANNEL,
+      (message) => {
+        this.calculatedValue = message.calculatedValue;
+        this.distance = this.account.data.fields.Distance.value;
+        this.pricePerKm = this.account.data.fields.Price_per_km__c.value;
+      }
+    );
+  }
+
+  disconnectedCallback() {
+    unsubscribe(this.subscription);
+    this.subscription = null;
+  }
+}

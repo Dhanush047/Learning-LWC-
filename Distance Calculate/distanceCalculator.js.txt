@@ -1,0 +1,26 @@
+import { LightningElement, wire } from 'lwc';
+import { getRecord } from 'lightning/uiRecordApi';
+import { publish, MessageContext } from 'lightning/messageService';
+import DISTANCE_CALCULATION_CHANNEL from '@salesforce/messageChannel/DistanceCalculationChannel__c';
+import ACCOUNT_DISTANCE_FIELD from '@salesforce/schema/Account.Distance__c';
+import ACCOUNT_PRICE_PER_KM_FIELD from '@salesforce/schema/Account.Price_per_km__c';
+const FIELDS = [ACCOUNT_DISTANCE_FIELD, ACCOUNT_PRICE_PER_KM_FIELD];
+export default class DistanceCalculator extends LightningElement {
+  distance = 0;
+  pricePerKm = 0;
+
+  @wire(getRecord, { recordId: '001XXXXXXXXXXXXXXX', fields: FIELDS })
+  account;
+
+  handleCalculate() {
+    const distance = this.template.querySelector('[name="distance"]').value;
+    const pricePerKm = this.template.querySelector('[name="pricePerKm"]').value;
+    const calculatedValue = distance * pricePerKm;
+
+    const message = {
+      calculatedValue,
+    };
+
+    publish(this.messageContext, DISTANCE_CALCULATION_CHANNEL, message);
+  }
+}
